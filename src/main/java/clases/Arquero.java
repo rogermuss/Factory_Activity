@@ -6,12 +6,14 @@ import armas.Arma;
 import java.util.Random;
 
 public class Arquero implements Personaje {
-    public static final String clase = "clases.Arquero";
+    public static final String clase = "Arquero";
     private String nombre;
     private int nivel;
     private int vida;
     private int ataque;
     private int punteria;
+    private Arma arma;
+    private Armadura armadura;
 
     public Arquero(String nombre) {
         this.nombre = nombre;
@@ -21,63 +23,65 @@ public class Arquero implements Personaje {
         this.punteria = punteriaRandom();
     }
 
-    public int punteriaRandom(){
+    public int punteriaRandom() {
         Random r = new Random();
         return r.nextInt(21) + 70;
     }
 
     @Override
     public Arma setArma(Arma arma) {
+        this.arma = arma;
         return arma;
     }
 
     @Override
     public Armadura setArmadura(Armadura armadura) {
+        this.armadura = armadura;
         return armadura;
     }
 
     @Override
-    public String getNombre() {
-        return nombre;
-    }
+    public String getNombre() { return nombre; }
 
     @Override
-    public int getNivel() {
-        return nivel;
-    }
+    public int getNivel() { return nivel; }
 
     @Override
-    public int getVida() {
-        return vida;
+    public int getVida() { return vida; }
+
+    @Override
+    public void aplicarDaño(int daño) {
+        vida -= daño;
     }
 
     @Override
     public void recibirDaño(int daño) {
-        vida = vida - daño;
+        if (armadura != null) {
+            armadura.proteger(this, daño);
+        } else {
+            aplicarDaño(daño);
+        }
     }
 
     @Override
     public void atacar(Personaje objetivo) {
-        objetivo.recibirDaño(ataque);
+        if (arma != null) {
+            arma.usar(this, objetivo);
+            objetivo.recibirDaño(arma.getDaño() + punteria);
+        } else {
+            objetivo.recibirDaño(ataque);
+        }
     }
 
     @Override
-    public void subirNivel() {
-        nivel++;
-    }
+    public void subirNivel() { nivel++; }
 
     @Override
-    public String getClasePersonaje() {
-        return "clases.Arquero";
-    }
+    public String getClasePersonaje() { return clase; }
 
-    public void setPunteria(int punteria) {
-        this.punteria = punteria;
-    }
+    public void setPunteria(int punteria) { this.punteria = punteria; }
 
-    public int getPunteria() {
-        return punteria;
-    }
+    public int getPunteria() { return punteria; }
 
     @Override
     public void mostrarInfo() {
@@ -85,8 +89,12 @@ public class Arquero implements Personaje {
         System.out.println("Nombre: " + nombre);
         System.out.println("Nivel: " + nivel);
         System.out.println("Vida: " + vida);
-        System.out.println("Ataque: " + ataque);
-        System.out.println("Punteria: " + punteria);
+        System.out.println("Ataque base: " + ataque);
+        System.out.println("Puntería: " + punteria);
+        if (arma != null)
+            System.out.println("Arma: " + arma.getNombre() + " (Daño: " + arma.getDaño() + ")");
+        if (armadura != null)
+            System.out.println("Armadura: " + armadura.getNombre() + " (Defensa: " + armadura.getDefensa() + ")");
         System.out.println("--------------------------------");
     }
 }

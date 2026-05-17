@@ -8,31 +8,27 @@ import armas.HachaDosManos;
 public class FabricaVikingo implements FabricaEquipamiento {
     private Arma arma = new HachaDosManos();
     private Armadura armadura = new ArmaduraCueroMetal();
-    @Override
-    public Arma crearArma() {
-        return arma;
-    }
 
     @Override
-    public Armadura crearArmadura() {
-        return armadura;
-    }
+    public Arma crearArma() { return arma; }
 
     @Override
-    public String getTematica() {
-        return "Vikingo";
-    }
+    public Armadura crearArmadura() { return armadura; }
+
+    @Override
+    public String getTematica() { return "Vikingo"; }
+
+    @Override
+    public String getClaseObjetivo() { return "Guerrero"; }
+
+    @Override
+    public int getBonus() { return 15; }
 
     @Override
     public String getBonusDescripcion() {
-        return "Conjunto de armaduras y armas vikingas:" +
+        return "Conjunto vikingo:" +
                 "\n- Arma: " + arma.getNombre() +
                 "\n- Armadura: " + armadura.getNombre() +
-                "\n- Bonus: +15 Puntería";
-    }
-
-    @Override
-    public int getBonus() {
-        return 15;
+                "\n- Bonus: +15 Fuerza (solo Guerrero)";
     }
 }

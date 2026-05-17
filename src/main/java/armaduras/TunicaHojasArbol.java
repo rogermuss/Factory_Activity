@@ -17,6 +17,10 @@ public class TunicaHojasArbol implements Armadura {
 
     @Override
     public void proteger(Personaje portador, int daño) {
-
+        int absorcion = defensa / 3;
+        int dañoNeto  = Math.max(daño - absorcion, 1);
+        System.out.println("  [" + nombre + " absorbe " + absorcion
+                + " de daño. Daño neto: " + dañoNeto + "]");
+        portador.aplicarDaño(dañoNeto);
     }
 }
